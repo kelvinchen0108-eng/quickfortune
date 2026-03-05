@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDSS | 趨吉避凶決策日誌</title>
+    <style>
+        :root {
+            --bg-color: #F7F9FB;          
+            --card-bg: #FFFFFF;           
+            --accent-color: #78909C;      
+            --text-main: #37474F;         
+            --text-sub: #78909C;          
+            --border-color: #ECEFF1;      
+            --point-color: #E0E0E0;       
+            --active-point: #78909C;      
+            --omen-good: #E8F5E9; --omen-good-text: #2E7D32;
+            --omen-bad: #FFEBEE; --omen-bad-text: #C62828;
+            --omen-neutral: #ECEFF1; --omen-neutral-text: #546E7A;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex; justify-content: center;
+        }
+
+        .container { width: 100%; max-width: 500px; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg-color); }
+
+        .nav-tabs { display: flex; background: var(--card-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        .nav-tab { flex: 1; padding: 18px; text-align: center; font-size: 15px; cursor: pointer; color: var(--text-sub); transition: 0.3s; }
+        .nav-tab.active { color: var(--accent-color); font-weight: 600; border-bottom: 3px solid var(--accent-color); }
+
+        .view-content { padding: 24px; flex: 1; overflow-y: auto; }
+        .hidden { display: none; }
+
+        .card { background: var(--card-bg); border-radius: 20px; padding: 24px; margin-bottom: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+
+        .omen-badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-right: 6px; }
+        .omen-G { background: var(--omen-good); color: var(--omen-good-text); }
+        .omen-B { background: var(--omen-bad); color: var(--omen-bad-text); }
+        .omen-N { background: var(--omen-neutral); color: var(--omen-neutral-text); }
+
+        .trigger-section { text-align: center; padding: 30px 0; }
+        #sample-btn {
+            width: 120px; height: 120px; border-radius: 50%; border: 1.2px solid var(--accent-color);
+            background: transparent; cursor: pointer; color: var(--accent-color); font-size: 15px; letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .main-tag { font-size: 22px; font-weight: 600; color: var(--accent-color); display: block; margin-bottom: 16px; text-align: center; }
+        .section-title { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; border-left: 3px solid var(--accent-color); padding-left: 10px; }
+        .guide-body { line-height: 1.8; font-size: 15px; margin-bottom: 20px; color: var(--text-main); }
+
+        .dim-row { display: flex; align-items: center; margin-bottom: 15px; font-size: 14px; }
+        .dim-label { width: 45px; font-weight: 500; }
+        .dim-advice { flex: 1; margin-left: 15px; color: var(--text-sub); font-size: 13px; }
+        .dim-dots { display: flex; gap: 5px; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--point-color); }
+        .dot.active { background: var(--active-point); }
+
+        .trace-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; }
+        .trace-card { min-width: 160px; background: #FAFAFA; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .trace-name { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; }
+        .trace-val { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+        .trace-desc { font-size: 11px; color: var(--text-sub); line-height: 1.4; }
+
+        .history-item { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .history-meta { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; display: flex; justify-content: space-between; border-bottom: 1px solid #F5F5F5; padding-bottom: 8px; }
+        textarea { width: 100%; border: 1px solid #F0F0F0; border-radius: 10px; padding: 12px; margin: 10px 0; font-family: inherit; font-size: 14px; background: #FAFAFA; box-sizing: border-box; }
+        .update-btn { background: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 14px; }
+
+        ::-webkit-scrollbar { height: 4px; width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #CFD8DC; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-tabs">
+        <div class="nav-tab active" onclick="switchView('main', this)">指點迷津</div>
+        <div class="nav-tab" onclick="switchView('history', this)">回測日誌</div>
+    </div>
+
+    <div id="view-main" class="view-content">
+        <div class="card" style="padding: 15px 20px;">
+            <div class="section-title">本質參數設置</div>
+            <input type="datetime-local" id="bazi-input" style="border:none; width:100%; font-size:15px;" value="2000-01-08T12:00">
+        </div>
+
+        <div class="trigger-section">
+            <button id="sample-btn">定點採樣</button>
+            <p style="font-size:11px; color:var(--text-sub); margin-top:15px;">拋開雜念，捕捉當下的時空共振</p>
+        </div>
+
+        <div id="result-area" class="hidden">
+            <div class="card">
+                <span id="res-tag" class="main-tag"></span>
+                <div class="section-title">時空狀態解碼 (STATUS)</div>
+                <div id="res-badges" style="margin-bottom:20px;"></div>
+                
+                <div class="section-title">核心啟發 (INSIGHT)</div>
+                <div id="res-guide" class="guide-body"></div>
+                
+                <div class="section-title">趨吉避凶行動建議 (ACTION)</div>
+                <div id="res-action" class="guide-body" style="background:#F8F9FA; padding:15px; border-radius:12px; border-left:4px solid var(--accent-color); font-size:14px;"></div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">生活維度觀察</div>
+                <div id="res-dimensions"></div>
+            </div>
+
+            <div class="section-title" style="margin-left:10px;">演算邏輯存根 (LOGIC)</div>
+            <div class="trace-scroll" id="res-trace"></div>
+        </div>
+        <div style="height:40px;"></div>
+    </div>
+
+    <div id="view-history" class="view-content hidden">
+        <div class="section-title">過往決策與印證紀錄</div>
+        <div id="history-list"></div>
+        <div style="height:40px;"></div>
+    </div>
+</div>
+
+<script>
+    const CONFIG = {
+        tags: { "G": "#順水推舟", "M": "#慢火細燉", "B": "#雲淡風輕", "W": "#謹言慎行" },
+        liuren: {
+            0: { n: "大安", o: "大吉", oc: "G", d: "身心安定，當下即是最好的安排。", t: "G", 
+                 a: "【加強吉運】：此時氣場沉穩。適合整理家務、穿著大地色或米色服飾。若想增強好運，可以靜坐十分鐘，或與長輩通話。行動上建議『守正』，不必急於求變。" },
+            1: { n: "留連", o: "中平", oc: "N", d: "事有延遲，適合整理內在，靜待時機。", t: "M", 
+                 a: "【趨吉策略】：能量流動稍慢。適合處理繁瑣的行政工作或閱讀。若感到焦躁，可透過整理書桌或手機相簿來改善氣場。穿著灰色系有助於平穩心情，靜候時機轉變。" },
+            2: { n: "速喜", o: "吉", oc: "G", d: "喜悅將至，保持行動的輕快與活力。", t: "G", 
+                 a: "【加強吉運】：機緣正在閃爍。適合穿著亮色系（如紅、橘、粉）增加活力。若有想見的人、想傳的訊息，現在就去做。主動分享一點好處給他人，能讓這份喜悅產生更大的複利。" },
+            3: { n: "赤口", o: "凶", oc: "B", d: "氣氛微躁，適合以沉默守護平靜。", t: "W", 
+                 a: "【化解凶性】：此時火氣較重。建議多喝水，穿著藍色或黑色系服飾來降溫。若遇到爭執，請立刻離開現場，不參與討論。居家可點燃清淡的薰香，或聽輕柔的流水聲來平復磁場。" },
+            4: { n: "小吉", o: "小吉", oc: "G", d: "微光漸現，持續的小步前行會有收穫。", t: "G", 
+                 a: "【增進好運】：運氣正在萌芽。適合穿著綠色系，或買一盆小植物放在桌上。適合進行一些微小的善良舉動（如隨手捐款、稱讚他人）。維持現有的節奏，不必大改動，細水長流。" },
+            5: { n: "空亡", o: "大凶", oc: "B", d: "能量留白，適合放空，不強求結果。", t: "B", 
+                 a: "【轉運之道】：現在是系統重置期。最忌諱大額消費或重大承諾。轉運的方法是『主動捨棄』——清理垃圾、斷捨離。若感到迷惘，去寺廟、教堂或大自然走走。穿著純白色有助於淨化雜念。" }
+        },
+        qimen: {
+            "開門": { d: "象徵新生，適合啟動。", o: "大吉", oc: "G" },
+            "休門": { d: "象徵休養，適合平靜。", o: "吉", oc: "G" },
+            "生門": { d: "象徵利潤，適合尋找資源。", o: "大吉", oc: "G" },
+            "死門": { d: "象徵結束，適合斷捨離。", o: "大凶", oc: "B" },
+            "驚門": { d: "象徵變動，注意細節。", o: "凶", oc: "B" },
+            "景門": { d: "象徵展示，防範虛華。", o: "中平", oc: "N" },
+            "傷門": { d: "注意損耗，防範意外。", o: "凶", oc: "B" },
+            "杜門": { d: "適合藏鋒，不宜露顯。", o: "中平", oc: "N" }
+        }
+    };
+
+    const Engine = {
+        guaNames: ["", "乾天", "兌澤", "離火", "震雷", "巽風", "坎水", "艮山", "坤地"],
+        analyze() {
+            const now = new Date();
+            const h = now.getHours(); const m = now.getMonth() + 1; const d = now.getDate();
+            const s = now.getSeconds(); const zhi = Math.floor((h + 1) / 2) % 12 + 1;
+            const lrIdx = (m + d + zhi - 2) % 6;
+            const lr = CONFIG.liuren[lrIdx];
+            const up = (now.getFullYear() + m + d) % 8 || 8;
+            const low = (now.getFullYear() + m + d + zhi) % 8 || 8;
+            const doors = ["開門", "休門", "生門", "傷門", "杜門", "景門", "死門", "驚門"];
+            const door = doors[s % 8];
+            const qm = CONFIG.qimen[door] || { d: "變動中", o: "中平", oc: "N" };
+
+            return {
+                id: Date.now(), time: now.toLocaleString('zh-TW', { hour12: false }),
+                lr, mh: `${this.guaNames[up]} → ${this.guaNames[low]}`,
+                qm: { door, omen: qm.o, oc: qm.oc, desc: qm.d },
+                note: "", outcome: ""
+            };
+        }
+    };
+
+    function switchView(view, el) {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.view-content').forEach(v => v.classList.add('hidden'));
+        document.getElementById('view-' + view).classList.remove('hidden');
+        el.classList.add('active');
+        if(view === 'history') renderHistory();
+    }
+
+    document.getElementById('sample-btn').addEventListener('click', () => {
+        const result = Engine.analyze();
+        saveLog(result);
+        renderOutput(result);
+    });
+
+    function renderOutput(data) {
+        document.getElementById('result-area').classList.remove('hidden');
+        document.getElementById('res-tag').innerText = CONFIG.tags[data.lr.t];
+        document.getElementById('res-guide').innerText = data.lr.d;
+        document.getElementById('res-action').innerText = data.lr.a;
+
+        document.getElementById('res-badges').innerHTML = `
+            <span class="omen-badge omen-${data.lr.oc}">${data.lr.n} [${data.lr.o}]</span>
+            <span class="omen-badge omen-${data.qm.oc}">${data.qm.door} [${data.qm.omen}]</span>
+        `;
+
+        const dims = [
+            {n: "事業", s: data.qm.oc === "G" ? 3 : 2, a: data.qm.desc},
+            {n: "財運", s: data.lr.oc === "G" ? 3 : 2, a: "價值在於長期的積累。"},
+            {n: "情誼", s: 2, a: "真誠溝通能化解隔閡。"},
+            {n: "內在", s: data.lr.n === "大安" ? 3 : 2, a: "你的內心即是避風港。"}
+        ];
+        let dimHtml = '';
+        dims.forEach(v => {
+            let dots = ''; for(let i=1; i<=3; i++) dots += `<div class="dot ${i<=v.s?'active':''}"></div>`;
+            dimHtml += `<div class="dim-row"><span class="dim-label">${v.n}</span><span class="dim-advice">${v.a}</span><div class="dim-dots">${dots}</div></div>`;
+        });
+        document.getElementById('res-dimensions').innerHTML = dimHtml;
+
+        document.getElementById('res-trace').innerHTML = `
+            <div class="trace-card"><div class="trace-name">小六壬 (時空節奏)</div><div class="trace-val">${data.lr.n} [${data.lr.o}]</div><div class="trace-desc">主導當下的基調</div></div>
+            <div class="trace-card"><div class="trace-name">奇門遁甲 (空間環境)</div><div class="trace-val">${data.qm.door} [${data.qm.omen}]</div><div class="trace-desc">外部影響的因素</div></div>
+            <div class="trace-card"><div class="trace-name">梅花易數 (因果變化)</div><div class="trace-val">${data.mh}</div><div class="trace-desc">事情發展的趨勢</div></div>
+        `;
+        window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+
+    function saveLog(r) {
+        let logs = JSON.parse(localStorage.getItem('mdss_vfinal_logs') || '[]');
+        logs.unshift(r);
+        localStorage.setItem('mdss_vfinal_logs', JSON.stringify(logs.slice(0, 50)));
+    }
+
+    function renderHistory() {
+        const logs = JSON.parse(localStorage.getItem('mdss_vfinal_logs') || '[]');
+        const list = document.getElementById('history-list');
+        list.innerHTML = logs.length ? '' : '<p style="text-align:center; color:var(--text-sub); margin-top:50px;">目前尚無紀錄</p>';
+        logs.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.innerHTML = `
+                <div class="history-meta">
+                    <span>${item.time}</span>
+                    <span style="color:var(--accent-color); font-weight:600;">${item.lr.n}[${item.lr.o}] | ${item.qm.door}[${item.qm.omen}]</span>
+                </div>
+                <div style="font-size:14px; margin:10px 0;"><strong>卦象解碼：</strong>${CONFIG.tags[item.lr.t]} - ${item.mh}</div>
+                <div class="section-title" style="font-size:11px;">當時的迷惘與脈絡 (Context)</div>
+                <textarea id="note-${item.id}" rows="2" placeholder="紀錄你當時的心境或問題...">${item.note || ''}</textarea>
+                <div class="section-title" style="font-size:11px;">後續的印證與回測 (Backtest)</div>
+                <textarea id="out-${item.id}" rows="2" placeholder="事情後來的發展如何？">${item.outcome || ''}</textarea>
+                <button class="update-btn" onclick="updateLog(${item.id})">儲存當下印證</button>
+            `;
+            list.appendChild(div);
+        });
+    }
+
+    function updateLog(id) {
+        let logs = JSON.parse(localStorage.getItem('mdss_vfinal_logs') || '[]');
+        const idx = logs.findIndex(l => l.id === id);
+        if(idx !== -1) {
+            logs[idx].note = document.getElementById(`note-${id}`).value;
+            logs[idx].outcome = document.getElementById(`out-${id}`).value;
+            localStorage.setItem('mdss_vfinal_logs', JSON.stringify(logs));
+            alert('紀錄已更新。');
+        }
+    }
+</script>
+</body>
+</html>
