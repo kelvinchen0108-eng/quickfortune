@@ -377,7 +377,7 @@
             div.innerHTML = `
                 <div class="history-meta"><span>${item.time}</span><span class="delete-btn" onclick="deleteLog(${item.id})">刪除</span></div>
                 <div style="font-size:14px; margin:10px 0; font-weight:600; color:var(--accent-color);">${item.globalTag} | ${item.lr.n}</div>
-                <textarea id="note-${item.id}" rows="2" placeholder="紀錄當下心境...">${item.note || ''}</textarea>
+                <textarea id="note-${item.id}" rows="2" placeholder="紀錄心境...">${item.note || ''}</textarea>
                 <textarea id="out-${item.id}" rows="2" placeholder="後續發展...">${item.outcome || ''}</textarea>
                 <button class="update-btn" onclick="updateLog(${item.id})">更新筆記</button>
             `;
