@@ -7,7 +7,7 @@
     <style>
         :root {
             --bg-color: #F7F9FB;          
-            --card-bg: #FFFFFF;           
+            --card-bg: #FFFFFF;            
             --accent-color: #78909C;      
             --text-main: #37474F;         
             --text-sub: #78909C;          
@@ -17,6 +17,8 @@
             --omen-good: #E8F5E9; --omen-good-text: #2E7D32;
             --omen-bad: #FFEBEE; --omen-bad-text: #C62828;
             --omen-neutral: #ECEFF1; --omen-neutral-text: #546E7A;
+            --danger-color: #EF5350;
+            --warning-bg: #FFF3E0; --warning-text: #E65100;
         }
 
         body {
@@ -30,7 +32,7 @@
         .container { width: 100%; max-width: 500px; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg-color); }
 
         .nav-tabs { display: flex; background: var(--card-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
-        .nav-tab { flex: 1; padding: 18px; text-align: center; font-size: 15px; cursor: pointer; color: var(--text-sub); transition: 0.3s; }
+        .nav-tab { flex: 1; padding: 18px 10px; text-align: center; font-size: 14px; cursor: pointer; color: var(--text-sub); transition: 0.3s; white-space: nowrap; }
         .nav-tab.active { color: var(--accent-color); font-weight: 600; border-bottom: 3px solid var(--accent-color); }
 
         .view-content { padding: 24px; flex: 1; overflow-y: auto; }
@@ -47,30 +49,35 @@
         #sample-btn {
             width: 120px; height: 120px; border-radius: 50%; border: 1.2px solid var(--accent-color);
             background: transparent; cursor: pointer; color: var(--accent-color); font-size: 15px; letter-spacing: 2px;
-            transition: all 0.3s;
+            transition: all 0.2s; outline: none; -webkit-tap-highlight-color: transparent;
         }
+        #sample-btn:active { background: rgba(120, 144, 156, 0.1); transform: scale(0.95); }
 
         .main-tag { font-size: 22px; font-weight: 600; color: var(--accent-color); display: block; margin-bottom: 16px; text-align: center; }
         .section-title { font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; border-left: 3px solid var(--accent-color); padding-left: 10px; }
         .guide-body { line-height: 1.8; font-size: 15px; margin-bottom: 20px; color: var(--text-main); }
 
-        .dim-row { display: flex; align-items: center; margin-bottom: 15px; font-size: 14px; }
-        .dim-label { width: 45px; font-weight: 500; }
-        .dim-advice { flex: 1; margin-left: 15px; color: var(--text-sub); font-size: 13px; }
-        .dim-dots { display: flex; gap: 5px; }
-        .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--point-color); }
-        .dot.active { background: var(--active-point); }
+        .action-block { background:#F8F9FA; padding:18px; border-radius:12px; border-left:4px solid var(--accent-color); font-size:14px; line-height:1.7; }
+        .action-sub-title { font-weight:600; color:var(--accent-color); margin-top:12px; display:block; border-bottom:1px solid #EEE; padding-bottom:4px; margin-bottom:8px; }
 
-        .trace-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; }
-        .trace-card { min-width: 160px; background: #FAFAFA; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .conflict-warning { background: var(--warning-bg); color: var(--warning-text); padding: 12px; border-radius: 10px; font-size: 13px; margin-bottom: 15px; border: 1px solid #FFE0B2; line-height: 1.5; }
+
+        .trace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .trace-card { background: #FAFAFA; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; }
         .trace-name { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; }
         .trace-val { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
         .trace-desc { font-size: 11px; color: var(--text-sub); line-height: 1.4; }
 
-        .history-item { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); }
-        .history-meta { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; display: flex; justify-content: space-between; border-bottom: 1px solid #F5F5F5; padding-bottom: 8px; }
+        .history-item { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); position: relative; }
+        .history-meta { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; display: flex; justify-content: space-between; border-bottom: 1px solid #F5F5F5; padding-bottom: 8px; align-items: center; }
+        .delete-btn { color: var(--danger-color); font-size: 11px; cursor: pointer; border: 1px solid var(--danger-color); padding: 2px 6px; border-radius: 4px; }
+
         textarea { width: 100%; border: 1px solid #F0F0F0; border-radius: 10px; padding: 12px; margin: 10px 0; font-family: inherit; font-size: 14px; background: #FAFAFA; box-sizing: border-box; }
         .update-btn { background: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 14px; }
+
+        .glossary-item { margin-bottom: 20px; border-bottom: 1px solid #EEE; padding-bottom: 15px; }
+        .glossary-term { font-weight: 600; color: var(--accent-color); margin-bottom: 5px; font-size: 15px; }
+        .glossary-desc { font-size: 13px; color: var(--text-main); line-height: 1.6; }
 
         ::-webkit-scrollbar { height: 4px; width: 4px; }
         ::-webkit-scrollbar-thumb { background: #CFD8DC; border-radius: 10px; }
@@ -81,23 +88,28 @@
 <div class="container">
     <div class="nav-tabs">
         <div class="nav-tab active" onclick="switchView('main', this)">指點迷津</div>
-        <div class="nav-tab" onclick="switchView('history', this)">回測日誌</div>
+        <div class="nav-tab" onclick="switchView('history', this)">紀錄日誌</div>
+        <div class="nav-tab" onclick="switchView('glossary', this)">術語百科</div>
     </div>
 
     <div id="view-main" class="view-content">
         <div class="card" style="padding: 15px 20px;">
             <div class="section-title">本質參數設置</div>
-            <input type="datetime-local" id="bazi-input" style="border:none; width:100%; font-size:15px;" value="2000-01-08T12:00">
+            <input type="datetime-local" id="bazi-input" style="border:none; width:100%; font-size:15px;" value="2000-01-01T12:00">
         </div>
 
         <div class="trigger-section">
             <button id="sample-btn">定點採樣</button>
-            <p style="font-size:11px; color:var(--text-sub); margin-top:15px;">拋開雜念，捕捉當下的時空共振</p>
+            <p style="font-size:11px; color:var(--text-sub); margin-top:15px;">長按感知：拋開雜念，捕捉當下的時空共振</p>
         </div>
 
         <div id="result-area" class="hidden">
             <div class="card">
-                <span id="res-tag" class="main-tag"></span>
+                <span id="res-global-tag" class="main-tag" style="color: #455A64; border-bottom: 2px solid #EEE; padding-bottom: 10px;"></span>
+                <span id="res-tag" class="main-tag" style="font-size: 14px; margin-top: 10px;"></span>
+                
+                <div id="res-conflict" class="hidden"></div>
+
                 <div class="section-title">時空狀態解碼 (STATUS)</div>
                 <div id="res-badges" style="margin-bottom:20px;"></div>
                 
@@ -105,23 +117,24 @@
                 <div id="res-guide" class="guide-body"></div>
                 
                 <div class="section-title">趨吉避凶行動建議 (ACTION)</div>
-                <div id="res-action" class="guide-body" style="background:#F8F9FA; padding:15px; border-radius:12px; border-left:4px solid var(--accent-color); font-size:14px;"></div>
-            </div>
-
-            <div class="card">
-                <div class="section-title">生活維度觀察</div>
-                <div id="res-dimensions"></div>
+                <div id="res-action" class="action-block"></div>
             </div>
 
             <div class="section-title" style="margin-left:10px;">演算邏輯存根 (LOGIC)</div>
-            <div class="trace-scroll" id="res-trace"></div>
+            <div class="trace-grid" id="res-trace"></div>
         </div>
         <div style="height:40px;"></div>
     </div>
 
     <div id="view-history" class="view-content hidden">
-        <div class="section-title">過往決策與印證紀錄</div>
+        <div class="section-title">過往決策與紀錄</div>
         <div id="history-list"></div>
+        <div style="height:40px;"></div>
+    </div>
+
+    <div id="view-glossary" class="view-content hidden">
+        <div class="section-title">術語解析百科</div>
+        <div class="card"><div id="glossary-content"></div></div>
         <div style="height:40px;"></div>
     </div>
 </div>
@@ -130,53 +143,97 @@
     const CONFIG = {
         tags: { "G": "#順水推舟", "M": "#慢火細燉", "B": "#雲淡風輕", "W": "#謹言慎行" },
         liuren: {
-            0: { n: "大安", o: "大吉", oc: "G", d: "身心安定，當下即是最好的安排。", t: "G", 
-                 a: "【加強吉運】：此時氣場沉穩。適合整理家務、穿著大地色或米色服飾。若想增強好運，可以靜坐十分鐘，或與長輩通話。行動上建議『守正』，不必急於求變。" },
-            1: { n: "留連", o: "中平", oc: "N", d: "事有延遲，適合整理內在，靜待時機。", t: "M", 
-                 a: "【趨吉策略】：能量流動稍慢。適合處理繁瑣的行政工作或閱讀。若感到焦躁，可透過整理書桌或手機相簿來改善氣場。穿著灰色系有助於平穩心情，靜候時機轉變。" },
-            2: { n: "速喜", o: "吉", oc: "G", d: "喜悅將至，保持行動的輕快與活力。", t: "G", 
-                 a: "【加強吉運】：機緣正在閃爍。適合穿著亮色系（如紅、橘、粉）增加活力。若有想見的人、想傳的訊息，現在就去做。主動分享一點好處給他人，能讓這份喜悅產生更大的複利。" },
-            3: { n: "赤口", o: "凶", oc: "B", d: "氣氛微躁，適合以沉默守護平靜。", t: "W", 
-                 a: "【化解凶性】：此時火氣較重。建議多喝水，穿著藍色或黑色系服飾來降溫。若遇到爭執，請立刻離開現場，不參與討論。居家可點燃清淡的薰香，或聽輕柔的流水聲來平復磁場。" },
-            4: { n: "小吉", o: "小吉", oc: "G", d: "微光漸現，持續的小步前行會有收穫。", t: "G", 
-                 a: "【增進好運】：運氣正在萌芽。適合穿著綠色系，或買一盆小植物放在桌上。適合進行一些微小的善良舉動（如隨手捐款、稱讚他人）。維持現有的節奏，不必大改動，細水長流。" },
-            5: { n: "空亡", o: "大凶", oc: "B", d: "能量留白，適合放空，不強求結果。", t: "B", 
-                 a: "【轉運之道】：現在是系統重置期。最忌諱大額消費或重大承諾。轉運的方法是『主動捨棄』——清理垃圾、斷捨離。若感到迷惘，去寺廟、教堂或大自然走走。穿著純白色有助於淨化雜念。" }
+            0: { n: "大安", o: "大吉", oc: "G", score: 2, d: "身心安定，當下即是最好的安排。", t: "G", a: "適合整理現狀，守正不敗。此刻氣場穩定，最適合將計畫落地，不宜隨意變更方向。", break: "【破局/轉念】：若感到停滯，請思考「如何精簡現有流程」，而非「增加新項目」。", boost: "【能量增強】：整理居住或辦公環境，大地色系服飾能穩定你的磁場。" },
+            1: { n: "留連", o: "中平", oc: "N", score: 0, d: "事有延遲，適合整理內在，靜待時機。", t: "M", a: "處理瑣事，靜候轉機。現在不適合硬推，勉強前行只會增加阻力。", break: "【破局/轉念】：將「延遲」看作「緩衝」。利用這段時間檢查計畫細節，彌補漏洞。", boost: "【能量增強】：進行一次深層大掃除，或整理手機相簿，清理不再需要的舊資訊。" },
+            2: { n: "速喜", o: "吉", oc: "G", score: 2, d: "喜悅將至，保持行動的輕快與活力。", t: "G", a: "機緣閃爍，主動溝通、分享好意。現在是建立人際連結與傳遞訊息的黃金期。", break: "【破局/轉念】：不要等待別人回應，由你主動點燃熱情。即使是微小的讚美也能啟動好運。", boost: "【能量增強】：穿著亮色系或帶有紅色元素的物品，與正面思考的朋友交談。" },
+            3: { n: "赤口", o: "凶", oc: "B", score: -2, d: "氣氛微躁，適合以沉默守護平靜。", t: "W", a: "遠離爭執現場，多喝水降火。此刻外部雜訊過多，最忌諱衝動反擊。", break: "【破局/轉念】：把衝突當作能量釋放。若有人挑釁，以「不回應」作為最強的回應。", boost: "【能量增強】：多喝水，聽流水的聲音，或在桌上擺放藍色系物品，以此降火。"},
+            4: { n: "小吉", o: "小吉", oc: "G", score: 1, d: "微光漸現，持續的小步前行會有收穫。", t: "G", a: "維持現有節奏，細水長流。不需要大張旗鼓，每天穩定推進一點點，累積即是力量。", break: "【破局/轉念】：降低預期，關注「已經完成」的部分，而不是「還沒完成」的部分。", boost: "【能量增強】：在家中或桌面上擺放綠色植物，接觸大自然能增加靈感與運氣。"},
+            5: { n: "空亡", o: "大凶", oc: "B", score: -2, d: "能量留白，適合放空，不強求結果。", t: "B", a: "系統重置期，最忌諱重大消費或承諾。此刻的「無」是為了接下來的「有」。", break: "【破局/轉念】：擁抱空白。如果計畫泡湯，就當作是宇宙在幫你清除錯誤選項。", boost: "【能量增強】：斷捨離，丟掉一件不再需要的舊物。純白色服飾有助於淨化雜念。" }
         },
         qimen: {
-            "開門": { d: "象徵新生，適合啟動。", o: "大吉", oc: "G" },
-            "休門": { d: "象徵休養，適合平靜。", o: "吉", oc: "G" },
-            "生門": { d: "象徵利潤，適合尋找資源。", o: "大吉", oc: "G" },
-            "死門": { d: "象徵結束，適合斷捨離。", o: "大凶", oc: "B" },
-            "驚門": { d: "象徵變動，注意細節。", o: "凶", oc: "B" },
-            "景門": { d: "象徵展示，防範虛華。", o: "中平", oc: "N" },
-            "傷門": { d: "注意損耗，防範意外。", o: "凶", oc: "B" },
-            "杜門": { d: "適合藏鋒，不宜露顯。", o: "中平", oc: "N" }
+            "開門": { d: "新生與開放，適合啟動計畫。", o: "大吉", oc: "G", score: 2 },
+            "休門": { d: "休養與和諧，適合調養生息。", o: "吉", oc: "G", score: 2 },
+            "生門": { d: "生機與收穫，適合尋找資源。", o: "大吉", oc: "G", score: 2 },
+            "死門": { d: "阻滯與結束，適合斷捨離。", o: "大凶", oc: "B", score: -2 },
+            "驚門": { d: "變動與虛驚，注意細節防範。", o: "凶", oc: "B", score: -2 },
+            "景門": { d: "展示與虛華，適合社交形象。", o: "中平", oc: "N", score: 0 },
+            "傷門": { d: "損耗與波折，防範意外損失。", o: "凶", oc: "B", score: -1 },
+            "杜門": { d: "藏鋒與保守，宜低調鑽研。", o: "中平", oc: "N", score: 0 }
+        },
+        yao: {
+            1: { n: "初爻", s: "耐心等待", score: 0, d: "一切才剛開始。能量還在土裡，這時候急著跳出來，反而容易被環境打壓。建議先多觀察、多準備。" },
+            2: { n: "二爻", s: "把握機會", score: 1, d: "開始看到一點苗頭。事情正進入穩定起步的好時機，順著感覺去做，會得到認可。" },
+            3: { n: "三爻", s: "謹慎細心", score: -1, d: "壓力最大階段。處於轉折點，內外要求都變多。此刻不求功勞，只求不犯錯，檢查細節。" },
+            4: { n: "四爻", s: "靈活應對", score: 0, d: "面臨選擇的關頭。不要死腦筋，隨時根據新情報動態調整計畫。" },
+            5: { n: "五爻", s: "全力以赴", score: 2, d: "最好的黃金時刻。大膽地展現自己或執行計畫，你的決策具備高度的影響力。" },
+            6: { n: "上爻", s: "見好就收", score: -2, d: "發展已到盡頭。好運可能即將用盡。這時候如果還想強求，反而會招來麻煩。" }
+        },
+        meihua: {
+            "乾天": { s: 1, d: "剛健強大，動能十足。" },
+            "坤地": { s: 1, d: "包容承載，穩定支援。" },
+            "離火": { s: 1, d: "明亮熱情，利於展示。" },
+            "兌澤": { s: 1, d: "喜悅交流，談判有利。" },
+            "震雷": { s: 0, d: "變動衝擊，突發狀況。" },
+            "巽風": { s: 0, d: "細微滲透，靈活適應。" },
+            "艮山": { s: 0, d: "靜止停滯，守候瓶頸。" },
+            "坎水": { s: -1, d: "深沉隱患，考驗智慧。" }
         }
     };
 
     const Engine = {
         guaNames: ["", "乾天", "兌澤", "離火", "震雷", "巽風", "坎水", "艮山", "坤地"],
-        analyze() {
+        analyze(duration) {
             const now = new Date();
             const h = now.getHours(); const m = now.getMonth() + 1; const d = now.getDate();
             const s = now.getSeconds(); const zhi = Math.floor((h + 1) / 2) % 12 + 1;
             const lrIdx = (m + d + zhi - 2) % 6;
             const lr = CONFIG.liuren[lrIdx];
-            const up = (now.getFullYear() + m + d) % 8 || 8;
-            const low = (now.getFullYear() + m + d + zhi) % 8 || 8;
-            const doors = ["開門", "休門", "生門", "傷門", "杜門", "景門", "死門", "驚門"];
-            const door = doors[s % 8];
-            const qm = CONFIG.qimen[door] || { d: "變動中", o: "中平", oc: "N" };
+            const upIdx = (now.getFullYear() + m + d) % 8 || 8;
+            const lowIdx = (now.getFullYear() + m + d + zhi) % 8 || 8;
+            const upName = this.guaNames[upIdx];
+            const lowName = this.guaNames[lowIdx];
+            const qmDoor = ["開門", "休門", "生門", "傷門", "杜門", "景門", "死門", "驚門"][s % 8];
+            const qm = CONFIG.qimen[qmDoor];
+            const yaoIdx = (duration % 6) + 1;
+            const yao = CONFIG.yao[yaoIdx];
+
+            const totalScore = lr.score + qm.score + CONFIG.meihua[upName].s + CONFIG.meihua[lowName].s + yao.score;
+            let globalTag = "";
+            if (totalScore >= 6) globalTag = "#天時地利";
+            else if (totalScore >= 2) globalTag = "#借勢而為";
+            else if (totalScore >= -1) globalTag = "#靜待風向";
+            else if (totalScore >= -5) globalTag = "#步步為營";
+            else globalTag = "#全身而退";
+
+            const envScore = lr.score + qm.score + CONFIG.meihua[upName].s + CONFIG.meihua[lowName].s;
+            let conflictMsg = "";
+            if (envScore > 1 && yao.score < 0) conflictMsg = "注意：環境優越但你選擇收手。思考是否因過度謹慎而錯失良機？";
+            else if (envScore < -1 && yao.score > 0) conflictMsg = "注意：目前環境不佳但你衝勁十足。建議適度煞車，避免無謂消耗。";
 
             return {
                 id: Date.now(), time: now.toLocaleString('zh-TW', { hour12: false }),
-                lr, mh: `${this.guaNames[up]} → ${this.guaNames[low]}`,
-                qm: { door, omen: qm.o, oc: qm.oc, desc: qm.d },
-                note: "", outcome: ""
+                lr, mh: `${upName} → ${lowName}`, qm: { door: qmDoor, omen: qm.o, oc: qm.oc, desc: qm.d },
+                yao: { idx: yaoIdx, name: yao.n, step: yao.s, desc: yao.desc, score: yao.score },
+                globalTag, conflictMsg, duration, note: "", outcome: ""
             };
         }
     };
+
+    let pressStartTime = 0;
+    const sampleBtn = document.getElementById('sample-btn');
+    sampleBtn.addEventListener('mousedown', () => { pressStartTime = Date.now(); });
+    sampleBtn.addEventListener('touchstart', (e) => { e.preventDefault(); pressStartTime = Date.now(); });
+    sampleBtn.addEventListener('mouseup', handleRelease);
+    sampleBtn.addEventListener('touchend', (e) => { e.preventDefault(); handleRelease(); });
+
+    function handleRelease() {
+        if (!pressStartTime) return;
+        const duration = Date.now() - pressStartTime;
+        pressStartTime = 0;
+        const result = Engine.analyze(duration);
+        saveLog(result);
+        renderOutput(result);
+    }
 
     function switchView(view, el) {
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -184,42 +241,62 @@
         document.getElementById('view-' + view).classList.remove('hidden');
         el.classList.add('active');
         if(view === 'history') renderHistory();
+        if(view === 'glossary') renderGlossary();
     }
-
-    document.getElementById('sample-btn').addEventListener('click', () => {
-        const result = Engine.analyze();
-        saveLog(result);
-        renderOutput(result);
-    });
 
     function renderOutput(data) {
         document.getElementById('result-area').classList.remove('hidden');
+        document.getElementById('res-global-tag').innerText = data.globalTag;
         document.getElementById('res-tag').innerText = CONFIG.tags[data.lr.t];
         document.getElementById('res-guide').innerText = data.lr.d;
-        document.getElementById('res-action').innerText = data.lr.a;
+        
+        const conflictEl = document.getElementById('res-conflict');
+        if (data.conflictMsg) {
+            conflictEl.innerHTML = `<div class="conflict-warning">${data.conflictMsg}</div>`;
+            conflictEl.classList.remove('hidden');
+        } else {
+            conflictEl.classList.add('hidden');
+        }
+
+        // 豐富 ACTION 內容，修復 undefined
+        document.getElementById('res-action').innerHTML = `
+            <span class="action-sub-title">📌 行動策略：${data.yao.step}</span>
+            ${data.yao.desc || ''}
+            <span class="action-sub-title">🔄 轉念/破局之道</span>
+            ${data.lr.break || '整理既有資源，不強求外援。'}
+            <span class="action-sub-title">🔥 能量增強建議</span>
+            ${data.lr.boost || '靜坐或深呼吸，找回內心節奏。'}
+            <hr style="border:0; border-top:1px solid #EEE; margin:15px 0;">
+            <div style="font-size:13px; color:var(--text-sub);">[背景調性] ${data.lr.a || ''}</div>
+        `;
 
         document.getElementById('res-badges').innerHTML = `
             <span class="omen-badge omen-${data.lr.oc}">${data.lr.n} [${data.lr.o}]</span>
             <span class="omen-badge omen-${data.qm.oc}">${data.qm.door} [${data.qm.omen}]</span>
         `;
 
-        const dims = [
-            {n: "事業", s: data.qm.oc === "G" ? 3 : 2, a: data.qm.desc},
-            {n: "財運", s: data.lr.oc === "G" ? 3 : 2, a: "價值在於長期的積累。"},
-            {n: "情誼", s: 2, a: "真誠溝通能化解隔閡。"},
-            {n: "內在", s: data.lr.n === "大安" ? 3 : 2, a: "你的內心即是避風港。"}
-        ];
-        let dimHtml = '';
-        dims.forEach(v => {
-            let dots = ''; for(let i=1; i<=3; i++) dots += `<div class="dot ${i<=v.s?'active':''}"></div>`;
-            dimHtml += `<div class="dim-row"><span class="dim-label">${v.n}</span><span class="dim-advice">${v.a}</span><div class="dim-dots">${dots}</div></div>`;
-        });
-        document.getElementById('res-dimensions').innerHTML = dimHtml;
-
+        // 修復四宮格內容，補回消失的內容文字
         document.getElementById('res-trace').innerHTML = `
-            <div class="trace-card"><div class="trace-name">小六壬 (時空節奏)</div><div class="trace-val">${data.lr.n} [${data.lr.o}]</div><div class="trace-desc">主導當下的基調</div></div>
-            <div class="trace-card"><div class="trace-name">奇門遁甲 (空間環境)</div><div class="trace-val">${data.qm.door} [${data.qm.omen}]</div><div class="trace-desc">外部影響的因素</div></div>
-            <div class="trace-card"><div class="trace-name">梅花易數 (因果變化)</div><div class="trace-val">${data.mh}</div><div class="trace-desc">事情發展的趨勢</div></div>
+            <div class="trace-card">
+                <div class="trace-name">時空節奏 (小六壬)</div>
+                <div class="trace-val">${data.lr.n}</div>
+                <div class="trace-desc">主導當下的基調</div>
+            </div>
+            <div class="trace-card">
+                <div class="trace-name">環境因素 (奇門)</div>
+                <div class="trace-val">${data.qm.door}</div>
+                <div class="trace-desc">外部影響與阻力</div>
+            </div>
+            <div class="trace-card">
+                <div class="trace-name">發展趨勢 (梅花)</div>
+                <div class="trace-val">${data.mh}</div>
+                <div class="trace-desc">事情演變的脈絡</div>
+            </div>
+            <div class="trace-card" style="border-color:var(--accent-color);">
+                <div class="trace-name">行動動爻</div>
+                <div class="trace-val">${data.yao.name} : ${data.yao.step}</div>
+                <div class="trace-desc">感應時長: ${data.duration}ms</div>
+            </div>
         `;
         window.scrollTo({ top: 400, behavior: 'smooth' });
     }
@@ -238,19 +315,23 @@
             const div = document.createElement('div');
             div.className = 'history-item';
             div.innerHTML = `
-                <div class="history-meta">
-                    <span>${item.time}</span>
-                    <span style="color:var(--accent-color); font-weight:600;">${item.lr.n}[${item.lr.o}] | ${item.qm.door}[${item.qm.omen}]</span>
-                </div>
-                <div style="font-size:14px; margin:10px 0;"><strong>卦象解碼：</strong>${CONFIG.tags[item.lr.t]} - ${item.mh}</div>
-                <div class="section-title" style="font-size:11px;">當時的迷惘與脈絡 (Context)</div>
-                <textarea id="note-${item.id}" rows="2" placeholder="紀錄你當時的心境或問題...">${item.note || ''}</textarea>
-                <div class="section-title" style="font-size:11px;">後續的印證與回測 (Backtest)</div>
-                <textarea id="out-${item.id}" rows="2" placeholder="事情後來的發展如何？">${item.outcome || ''}</textarea>
-                <button class="update-btn" onclick="updateLog(${item.id})">儲存當下印證</button>
+                <div class="history-meta"><span>${item.time}</span><span class="delete-btn" onclick="deleteLog(${item.id})">刪除</span></div>
+                <div style="font-size:14px; margin:10px 0; font-weight:600; color:var(--accent-color);">${item.globalTag} | ${item.lr.n}</div>
+                <textarea id="note-${item.id}" rows="2" placeholder="紀錄心境...">${item.note || ''}</textarea>
+                <textarea id="out-${item.id}" rows="2" placeholder="後續發展...">${item.outcome || ''}</textarea>
+                <button class="update-btn" onclick="updateLog(${item.id})">更新筆記</button>
             `;
             list.appendChild(div);
         });
+    }
+
+    function deleteLog(id) {
+        if(confirm('刪除紀錄？')) {
+            let logs = JSON.parse(localStorage.getItem('mdss_vfinal_logs') || '[]');
+            logs = logs.filter(l => l.id !== id);
+            localStorage.setItem('mdss_vfinal_logs', JSON.stringify(logs));
+            renderHistory();
+        }
     }
 
     function updateLog(id) {
@@ -260,8 +341,28 @@
             logs[idx].note = document.getElementById(`note-${id}`).value;
             logs[idx].outcome = document.getElementById(`out-${id}`).value;
             localStorage.setItem('mdss_vfinal_logs', JSON.stringify(logs));
-            alert('紀錄已更新。');
+            alert('紀錄已更新');
         }
+    }
+
+    function renderGlossary() {
+        const content = document.getElementById('glossary-content');
+        let html = '<div class="section-title">⚖️ 綜合標籤評分定義</div>';
+        const globalTagsDesc = { "#天時地利": "。環境極佳，適合大膽推進。", "#借勢而為": "。大局穩定，適合順勢前進。", "#靜待風向": "。信號混雜，宜觀望守成。", "#步步為營": "。環境已有風險，需謹慎。", "#全身而退": "。宜徹底休息，避免妄動。" };
+        Object.keys(globalTagsDesc).forEach(k => html += `<div class="glossary-item"><div class="glossary-term">${k}</div><div class="glossary-desc">${globalTagsDesc[k]}</div></div>`);
+        
+        html += '<div class="section-title" style="margin-top:30px;">🖐️ 小六壬 (時空情緒)</div>';
+        Object.values(CONFIG.liuren).forEach(l => html += `<div class="glossary-item"><div class="glossary-term">${l.n} [${l.o}]</div><div class="glossary-desc">${l.d}<br><b>建議：</b>${l.a}<br><b>破局：</b>${l.break}</div></div>`);
+
+        html += '<div class="section-title" style="margin-top:30px;">⛩️ 奇門遁甲 (空間環境)</div>';
+        Object.keys(CONFIG.qimen).forEach(k => html += `<div class="glossary-item"><div class="glossary-term">${k} [${CONFIG.qimen[k].o}]</div><div class="glossary-desc">${CONFIG.qimen[k].d}</div></div>`);
+
+        html += '<div class="section-title" style="margin-top:30px;">⚡ 行動動爻 (處事階段)</div>';
+        Object.values(CONFIG.yao).forEach(y => html += `<div class="glossary-item"><div class="glossary-term">${y.n} : ${y.s}</div><div class="glossary-desc">${y.d}</div></div>`);
+
+        html += '<div class="section-title" style="margin-top:30px;">🎨 梅花卦象 (事情體質)</div>';
+        Object.keys(CONFIG.meihua).forEach(k => html += `<div class="glossary-item"><div class="glossary-term">${k}</div><div class="glossary-desc">${CONFIG.meihua[k].d}</div></div>`);
+        content.innerHTML = html;
     }
 </script>
 </body>
