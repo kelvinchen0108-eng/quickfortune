@@ -40,7 +40,6 @@
 
         .card { background: var(--card-bg); border-radius: 20px; padding: 24px; margin-bottom: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.02); position: relative; }
 
-        /* 運算邏輯按鈕樣式 */
         .logic-btn { 
             font-size: 11px; color: var(--accent-color); cursor: pointer; 
             text-decoration: none; margin-left: 10px; font-weight: normal;
@@ -74,7 +73,6 @@
         .trace-val { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
         .trace-desc { font-size: 10px; color: var(--text-sub); line-height: 1.3; margin-top: 4px; }
 
-        /* Modal */
         #modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.6); z-index: 1000; display: none; align-items: center; justify-content: center;
@@ -141,12 +139,12 @@
                 本質參數設置(生日) <span class="logic-btn" onclick="openModal()">[ 運算邏輯 ]</span>
             </div>
             <input type="datetime-local" id="bazi-input" style="border:none; width:100%; font-size:15px;" value="2000-01-01T12:00">
-            <p style="font-size:10px; color:var(--text-sub); margin-top:8px;">* 若不輸入生日，將採用「通用頻率」    *問事:一天一事一掛</p>
+            <p style="font-size:10px; color:var(--text-sub); margin-top:8px;">* 若不輸入生日，將採用「通用頻率」* 問事:一天一事一掛</p>
         </div>
 
         <div class="trigger-section">
             <button id="sample-btn">定點採樣</button>
-            <p id="gps-status" style="font-size:11px; color:var(--text-sub); margin-top:15px; padding: 0 20px; line-height:1.5;">長按感知：拋開雜念心中默想問題，捕捉當下的時空共振(所有答案皆為娛樂參考)</p>
+            <p id="gps-status" style="font-size:11px; color:var(--text-sub); margin-top:15px; padding: 0 20px; line-height:1.5;">長按感知：拋開雜念心中默想問題，捕捉當下的時空共振(結果屬娛樂參考)</p>
         </div>
 
         <div id="result-area" class="hidden">
@@ -212,18 +210,18 @@
             "杜門": { d: "藏鋒與保守，宜低調鑽研。", o: "中平", oc: "N", score: 0 }
         },
         yao: {
-            1: { n: "初爻", s: "耐心等待", score: 0, d: "一切才剛開始。能量還在土裡，急著跳出來反而會被環境打壓。建議多觀察。" },
-            2: { n: "二爻", s: "把握機會", score: 1, d: "開始看到苗頭。事情正進入穩定起步的好時機，順著感覺去做會得到認可。" },
-            3: { n: "三爻", s: "謹慎細心", score: -1, d: "壓力最大階段。處於轉折點，內外要求都變多。此刻只求不犯錯。" },
-            4: { n: "四爻", s: "靈活應對", score: 0, d: "面臨選擇關頭。不要死腦筋，隨時根據新情報動態調整計畫。" },
-            5: { n: "五爻", s: "全力以赴", score: 2, d: "最好的黃金時刻。大膽展現自己，決策具備高度影響力，是收穫與主導時刻。" },
-            6: { n: "上爻", s: "見好就收", score: -2, d: "發展已到盡頭。好運即將用盡。強求反而招來麻煩，留一點退路。" }
+            1: { n: "初爻", s: "耐心等待", score: 0, desc: "一切才剛開始。能量還在土裡，急著跳出來反而會被環境打壓。建議多觀察。" },
+            2: { n: "二爻", s: "把握機會", score: 1, desc: "開始看到苗頭。事情正進入穩定起步的好時機，順著感覺去做會得到認可。" },
+            3: { n: "三爻", s: "謹慎細心", score: -1, desc: "壓力最大階段。處於轉折點，內外要求都變多。此刻只求不犯錯。" },
+            4: { n: "四爻", s: "靈活應對", score: 0, desc: "面臨選擇關頭。不要死腦筋，隨時根據新情報動態調整計畫。" },
+            5: { n: "五爻", s: "全力以赴", score: 2, desc: "最好的黃金時刻。大膽展現自己，決策具備高度影響力，是收穫與主導時刻。" },
+            6: { n: "上爻", s: "見好就收", score: -2, desc: "發展已到盡頭。好運即將用盡。強求反而招來麻煩，留一點退路。" }
         },
         meihua: {
-            "乾天": { s: 1, d: "剛健強大，動能十足。" }, "坤地": { s: 1, d: "包容承載，穩定支援。" },
-            "離火": { s: 1, d: "明亮熱情，利於展示。" }, "兌澤": { s: 1, d: "喜悅交流，談判有利。" },
-            "震雷": { s: 0, d: "變動衝擊，突發狀況。" }, "巽風": { s: 0, d: "細微滲透，靈活適應。" },
-            "艮山": { s: 0, d: "靜止停滯，守候瓶頸。" }, "坎水": { s: -1, d: "深沉隱患，考驗智慧。" }
+            "乾天": { s: 1, desc: "剛健強大，動能十足。" }, "坤地": { s: 1, desc: "包容承載，穩定支援。" },
+            "離火": { s: 1, desc: "明亮熱情，利於展示。" }, "兌澤": { s: 1, desc: "喜悅交流，談判有利。" },
+            "震雷": { s: 0, desc: "變動衝擊，突發狀況。" }, "巽風": { s: 0, desc: "細微滲透，靈活適應。" },
+            "艮山": { s: 0, desc: "靜止停滯，守候瓶頸。" }, "坎水": { s: -1, desc: "深沉隱患，考驗智慧。" }
         }
     };
 
@@ -233,13 +231,12 @@
             const now = new Date();
             const birthStr = document.getElementById('bazi-input').value;
             
-            // 👤 本質校準 (Self-Correction Logic)
             let selfScore = 0;
             let selfMode = "通用頻率";
             if(birthStr) {
                 const birth = new Date(birthStr);
                 const selfSum = birth.getFullYear() + (birth.getMonth()+1) + birth.getDate() + (birth.getHours() || 12);
-                selfScore = (selfSum % 3) - 1; // 產生 -1, 0, +1
+                selfScore = (selfSum % 3) - 1;
                 selfMode = `本質校準偏移: ${selfScore > 0 ? '+'+selfScore : selfScore}`;
             }
 
@@ -264,7 +261,7 @@
             const totalScore = lr.score + qm.score + CONFIG.meihua[upName].s + CONFIG.meihua[lowName].s + yao.score + selfScore;
             
             let globalTag = "";
-            if (totalScore >= 6) globalTag = "總分析:天時地利 (大吉)";
+            if (totalScore >= 6) globalTag = "總分析:天時地利(大吉)";
             else if (totalScore >= 2) globalTag = "總分析:借勢而為 (小吉)";
             else if (totalScore >= -1) globalTag = "總分析:靜待風向 (中)";
             else if (totalScore >= -5) globalTag = "總分析:步步為營 (小兇)";
@@ -322,15 +319,16 @@
             conflictEl.classList.remove('hidden');
         } else { conflictEl.classList.add('hidden'); }
 
+        // ✅ 修復邏輯：使用 || "" 確保即便數據缺失也不會出現 undefined
         document.getElementById('res-action').innerHTML = `
-            <span class="action-sub-title">📌 行動策略：${data.yao.step}</span>
-            ${data.yao.desc}
+            <span class="action-sub-title">📌 行動策略：${data.yao.step || ""}</span>
+            ${data.yao.desc || ""}
             <span class="action-sub-title">🔄 轉念/破局之道</span>
-            ${data.lr.break}
+            ${data.lr.break || ""}
             <span class="action-sub-title">🔥 能量增強建議</span>
-            ${data.lr.boost}
+            ${data.lr.boost || ""}
             <hr style="border:0; border-top:1px solid #EEE; margin:15px 0;">
-            <div style="font-size:12px; color:var(--text-sub);">[${data.selfMode}] ${data.lr.a}</div>
+            <div style="font-size:12px; color:var(--text-sub);">[${data.selfMode || "通用模式"}] ${data.lr.a || ""}</div>
         `;
 
         document.getElementById('res-badges').innerHTML = `
@@ -341,23 +339,23 @@
         document.getElementById('res-trace').innerHTML = `
             <div class="trace-card">
                 <div class="trace-name">時空節奏 (小六壬)</div>
-                <div class="trace-val">${data.lr.n}</div>
+                <div class="trace-val">${data.lr.n || ""}</div>
                 <div class="trace-desc">目前大局基調</div>
             </div>
             <div class="trace-card">
                 <div class="trace-name">環境因素 (奇門)</div>
-                <div class="trace-val">${data.qm.door}</div>
-                <div class="trace-desc">空間參數: ${data.qm.coords}</div>
+                <div class="trace-val">${data.qm.door || ""}</div>
+                <div class="trace-desc">空間參數: ${data.qm.coords || ""}</div>
             </div>
             <div class="trace-card">
                 <div class="trace-name">發展趨勢 (梅花)</div>
-                <div class="trace-val">${data.mh}</div>
+                <div class="trace-val">${data.mh || ""}</div>
                 <div class="trace-desc">事情演變的脈絡</div>
             </div>
             <div class="trace-card" style="border-color:var(--accent-color);">
                 <div class="trace-name">行動動爻</div>
-                <div class="trace-val">${data.yao.name}</div>
-                <div class="trace-desc">行為感應: ${data.duration}ms</div>
+                <div class="trace-val">${data.yao.name || ""}</div>
+                <div class="trace-desc">行為感應: ${data.duration || 0}ms</div>
             </div>
         `;
         window.scrollTo({ top: 400, behavior: 'smooth' });
@@ -420,10 +418,10 @@
         Object.keys(CONFIG.qimen).forEach(k => html += `<div class="glossary-item"><div class="glossary-term">${k}</div><div class="glossary-desc">${CONFIG.qimen[k].d}</div></div>`);
 
         html += '<div class="section-title" style="margin-top:30px;">⚡ 行動動爻 (處事階段)</div>';
-        Object.values(CONFIG.yao).forEach(y => html += `<div class="glossary-item"><div class="glossary-term">${y.n}</div><div class="glossary-desc">${y.d}</div></div>`);
+        Object.values(CONFIG.yao).forEach(y => html += `<div class="glossary-item"><div class="glossary-term">${y.n}</div><div class="glossary-desc">${y.desc}</div></div>`);
 
         html += '<div class="section-title" style="margin-top:30px;">🎨 梅花卦象 (事情體質)</div>';
-        Object.keys(CONFIG.meihua).forEach(k => html += `<div class="glossary-item"><div class="glossary-term">${k}</div><div class="glossary-desc">${CONFIG.meihua[k].d}</div></div>`);
+        Object.keys(CONFIG.meihua).forEach(k => html += `<div class="glossary-item"><div class="glossary-term">${k}</div><div class="glossary-desc">${CONFIG.meihua[k].desc}</div></div>`);
         content.innerHTML = html;
     }
 
@@ -434,9 +432,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
